@@ -3,27 +3,60 @@ import { CourseProgress } from "../models/CourseProgress.js"
 import { Purchase } from "../models/Purchase.js"
 import User from "../models/User.js"
 import stripe from "stripe"
+//import { clerkClient } from '@clerk/clerk-sdk-node'
+
 
 
 
 // Get User Data
+// export const getUserData = async (req, res) => {
+//     try {
+
+//         const userId = req.auth.userId
+
+//         const user = await User.findById(userId)
+
+//         if (!user) {
+//             return res.json({ success: false, message: 'User Not Found' })
+//         }
+
+//         res.json({ success: true, user })
+
+//     } catch (error) {
+//         res.json({ success: false, message: error.message })
+//     }
+// }
+import { clerkClient } from '@clerk/clerk-sdk-node'
+
 export const getUserData = async (req, res) => {
-    try {
+  try {
+    const userId = req.auth.userId;
 
-        const userId = req.auth.userId
+    let user = await User.findById(userId);
 
-        const user = await User.findById(userId)
+    // 👇 Handle missing user in DB (possibly due to webhook delay)
+    if (!user) {
+      // Fetch from Clerk directly
+      const clerkUser = await clerkClient.users.getUser(userId);
 
-        if (!user) {
-            return res.json({ success: false, message: 'User Not Found' })
-        }
+      const newUserData = {
+        _id: clerkUser.id,
+        email: clerkUser.emailAddresses[0].emailAddress,
+        name: clerkUser.firstName + " " + clerkUser.lastName,
+        imageUrl: clerkUser.imageUrl,
+        resume: ''
+      };
 
-        res.json({ success: true, user })
-
-    } catch (error) {
-        res.json({ success: false, message: error.message })
+      // Save to MongoDB
+      user = await User.create(newUserData);
     }
-}
+console.log("User returned:", user);
+    res.json({ success: true, user });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 
 // Purchase Course 
 export const purchaseCourse = async (req, res) => {
@@ -87,22 +120,39 @@ export const purchaseCourse = async (req, res) => {
 }
 
 // Users Enrolled Courses With Lecture Links
+// export const userEnrolledCourses = async (req, res) => {
+
+//     try {
+
+//         const userId = req.auth.userId
+
+//         const userData = await User.findById(userId)
+//             .populate('enrolledCourses')
+
+//         res.json({ success: true, enrolledCourses: userData.enrolledCourses })
+
+//     } catch (error) {
+//         res.json({ success: false, message: error.message })
+//     }
+
+// }
+
 export const userEnrolledCourses = async (req, res) => {
+  try {
+    const userId = req.auth.userId;
 
-    try {
+    const userData = await User.findById(userId).populate('enrolledCourses');
 
-        const userId = req.auth.userId
-
-        const userData = await User.findById(userId)
-            .populate('enrolledCourses')
-
-        res.json({ success: true, enrolledCourses: userData.enrolledCourses })
-
-    } catch (error) {
-        res.json({ success: false, message: error.message })
+    if (!userData) {
+      return res.status(404).json({ success: false, message: 'User Not Found' });
     }
 
-}
+    res.json({ success: true, enrolledCourses: userData.enrolledCourses });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 
 // Update User Course Progress
 export const updateUserCourseProgress = async (req, res) => {

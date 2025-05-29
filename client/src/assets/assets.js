@@ -1,5 +1,5 @@
-import logo from './logo.svg'
-import logo_dark from './logo_dark.svg'
+import logo from './logo.png'
+import logo_dark from './logo_dark.png'
 import search_icon from './search_icon.svg'
 import cross_icon from './cross_icon.svg'
 import upload_area from './upload_area.svg'
@@ -93,25 +93,25 @@ export const assets = {
 
 export const dummyTestimonial = [
     {
-        name: 'Donald Jackman',
+        name: 'Siddharth Singh',
         role: 'SWE 1 @ Amazon',
         image: assets.profile_img_1,
         rating: 5,
-        feedback: 'I\'ve been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.',
+        feedback: 'PrimeLearn has transformed my teaching approach. The intuitive interface and interactive modules make online education seamless and engaging for my students.',
     },
     {
-        name: 'Richard Nelson',
+        name: 'Ananya Sharma',
         role: 'SWE 2 @ Samsung',
         image: assets.profile_img_2,
         rating: 4,
-        feedback: 'I\'ve been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.',
+        feedback: 'Balancing work and studies became manageable with PrimeLearn. The flexibility to learn at my own pace has been a game-changer for my academic progress.',
     },
     {
-        name: 'James Washington',
+        name: 'Ravi Kumar',
         role: 'SWE 2 @ Google',
         image: assets.profile_img_3,
-        rating: 4.5,
-        feedback: 'I\'ve been using Imagify for nearly two years, primarily for Instagram, and it has been incredibly user-friendly, making my work much easier.',
+        rating: 5,
+        feedback: 'Implementing this platform streamlined our employee training. The customizable courses and real-time analytics have significantly enhanced our team learning experience',
     },
 ];
 
