@@ -104,11 +104,11 @@ const CourseDetails = () => {
           <h1 className="md:text-course-deatails-heading-large text-course-deatails-heading-small font-semibold text-gray-800">
             {courseData.courseTitle}
           </h1>
-          <p className="pt-4 md:text-base text-sm" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.slice(0, 200) }}>
-          </p>
+          {/* <p className="pt-4 md:text-base text-sm" dangerouslySetInnerHTML={{ __html: courseData.courseDescription.slice(0, 200) }}>
+          </p> */}
 
           <div className='flex items-center space-x-2 pt-3 pb-1 text-sm'>
-            <p>{calculateRating(courseData)}</p>
+            {/* <p>{calculateRating(courseData)}</p> */}
             <div className='flex'>
               {[...Array(5)].map((_, i) => (<img key={i} src={i < Math.floor(calculateRating(courseData)) ? assets.star : assets.star_blank} alt=''
                 className='w-3.5 h-3.5' />
